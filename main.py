@@ -1,31 +1,33 @@
 import tkinter as tk
-from antrian import ambil_antrian
-from login import buka_login_admin
-from display import buka_display
-
-def buka_antrian():
-    kode = ambil_antrian()
-
-    window = tk.Toplevel()
-    window.title("Nomor Antrian")
-    window.geometry("400x300")
-
-    tk.Label(window, text="Nomor Antrian Anda", font=("Arial", 14)).pack(pady=20)
-    tk.Label(window, text=kode, font=("Arial", 30, "bold")).pack(pady=10)
-    tk.Label(window, text="Silahkan Menunggu").pack(pady=10)
-
-    tk.Button(window, text="OK", command=window.destroy).pack(pady=20)
+from user_window import open_user_window
+from admin_login import open_login_window
 
 root = tk.Tk()
 root.title("Aplikasi Antrian")
-root.geometry("400x300")
+root.state("zoomed")
+root.configure(bg="#0f172a")
 
-tk.Label(root, text="SELAMAT DATANG", font=("Arial", 16, "bold")).pack(pady=30)
+frame = tk.Frame(root, bg="#0f172a")
+frame.pack(fill="both", expand=True)
 
-tk.Button(root, text="Ambil Nomor Antrian", width=25, height=2, command=buka_antrian).pack(pady=10)
+tk.Label(frame, text="APLIKASI ANTRIAN",
+         font=("Segoe UI", 30, "bold"),
+         fg="white", bg="#0f172a").pack(pady=50)
 
-tk.Button(root, text="Admin Login", width=25, height=2, command=buka_login_admin).pack(pady=10)
 
-tk.Button(root, text="Display Antrian", width=25, height=2, command=buka_display).pack(pady=10)
+def btn(text, color, cmd):
+    b = tk.Label(frame, text=text, bg=color, fg="white",
+                 font=("Segoe UI", 14, "bold"),
+                 width=20, height=2, cursor="hand2")
+
+    b.bind("<Enter>", lambda e: b.config(bg="#334155"))
+    b.bind("<Leave>", lambda e: b.config(bg=color))
+    b.bind("<Button-1>", lambda e: cmd())
+
+    b.pack(pady=15)
+
+
+btn("Ambil Antrian", "#22c55e", open_user_window)
+btn("Login Admin", "#f59e0b", open_login_window)
 
 root.mainloop()
